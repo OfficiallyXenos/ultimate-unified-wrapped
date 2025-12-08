@@ -1,0 +1,15 @@
+# Security (NEVER remove this)
+.env
+
+# Massive Data Files
+data/
+*.json
+*.parquet
+*.csv
+
+# Python System Files
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.cache

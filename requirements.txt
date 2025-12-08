@@ -1,0 +1,11 @@
+pandas
+numpy
+spotipy
+rapidfuzz
+matplotlib
+seaborn
+plotly
+streamlit
+python-dotenv
+pyarrow
+ipykernel
