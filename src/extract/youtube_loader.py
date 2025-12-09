@@ -47,6 +47,7 @@ def load_youtube_data():
         return "unknown"
     
     music_df['artist_name'] = music_df['subtitles'].apply(get_artist_name)
+    music_df['artist_name'] = music_df['artist_name'].str.replace(" - Topic", "", regex=False)
 
     #filtering for music listended to in only 2025
     df_2025 = music_df[music_df['timestamp'].dt.year == 2025].copy()
@@ -59,7 +60,7 @@ def load_youtube_data():
     final_df.to_parquet(save_path)
 
     print(f"saved to {save_path}, found {len(final_df)} songs")
-    
+
 if __name__ == "__main__":
     load_youtube_data()
     
