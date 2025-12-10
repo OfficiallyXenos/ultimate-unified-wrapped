@@ -55,4 +55,72 @@ def clean_artist_name(artist_name):
 
     return artist_name if artist_name else "unknown"
 
+def clean_spotify_data():
+    """
+    Load, clean and save spotify data
+    """
+    # get the path for the file to be cleaned
+    input_path = os.path.join(PROCESSED_DATA_FOLDER, "Spotify_history.parquet")
+
+    # check if the file exists
+    if not os.path.exists(input_path):
+        print("No spotify file found")
+        return None
+    
+    #load the file into a dataframe
+    df = pd.read_parquet(input_path)
+    print(f"loaded {len(df)} spotify records")
+
+    #clean the track name and artist name columns
+    df['track_name_cleaned'] = df['track_name'].apply(clean_track_name)
+    df['artist_name_cleaned'] = df['artist_name'].apply(clean_artist_name)
+
+    #check the cleaning that was done
+    if len(df) > 0:
+        sample = df[['track_name','track_name_cleaned', 'artist_name', 'artist_name_cleaned']].head(5)
+        for idx, rows in sample.iterrows():
+            print(f"Original: {rows['track_name'][:40]} | {rows['artist_name'][:30]}")
+            print(f"Cleaned: {rows['track_name_cleaned'][:40]} | {rows['artist_name_cleaned'][:30]}")
+            print()
+
+    save_path = os.path.join(PROCESSED_DATA_FOLDER, "spotify_cleaned")
+    df.to_parquet(save_path, index=False)
+    print("cleaned spotify data saved")
+
+    return df
+
+def clean_youtube_data():
+    """
+    Load, clean and save spotify data
+    """
+    # get the path for the file to be cleaned
+    input_path = os.path.join(PROCESSED_DATA_FOLDER, "youtube_history_2025.parquet")
+
+    # check if the file exists
+    if not os.path.exists(input_path):
+        print("No youtube file found")
+        return None
+    
+    #load the file into a dataframe
+    df = pd.read_parquet(input_path)
+    print(f"loaded {len(df)} youtube records")
+
+    #clean the track name and artist name columns
+    df['track_name_cleaned'] = df['track_name'].apply(clean_track_name)
+    df['artist_name_cleaned'] = df['artist_name'].apply(clean_artist_name)
+
+    #check the cleaning that was done
+    if len(df) > 0:
+        sample = df[['track_name','track_name_cleaned', 'artist_name', 'artist_name_cleaned']].head(5)
+        for idx, rows in sample.iterrows():
+            print(f"Original: {rows['track_name'][:40]} | {rows['artist_name'][:30]}")
+            print(f"Cleaned: {rows['track_name_cleaned'][:40]} | {rows['artist_name_cleaned'][:30]}")
+            print()
+
+    save_path = os.path.join(PROCESSED_DATA_FOLDER, "youtube_cleaned")
+    df.to_parquet(save_path, index=False)
+    print("cleaned youtube data saved")
+
+    return df
+
 
