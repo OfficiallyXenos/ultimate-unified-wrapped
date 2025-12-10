@@ -29,7 +29,7 @@ def clean_track_name(track_name):
     # cleaning up the result
     track_name = track_name.strip()
     track_name = " ".join(track_name.split())
-    track_name = track_name.split(" ._-")
+    track_name = track_name.strip(" ._-")
 
     return track_name if track_name else "unknown"
 
@@ -77,10 +77,10 @@ def clean_spotify_data():
 
     #check the cleaning that was done
     if len(df) > 0:
-        sample = df[['track_name','track_name_cleaned', 'artist_name', 'artist_name_cleaned']].head(5)
+        sample = df[['track_name','track_name_cleaned', 'artist_name', 'artist_name_cleaned']].sample(5)
         for idx, rows in sample.iterrows():
-            print(f"Original: {rows['track_name'][:40]} | {rows['artist_name'][:30]}")
-            print(f"Cleaned: {rows['track_name_cleaned'][:40]} | {rows['artist_name_cleaned'][:30]}")
+            print(f"Original: {rows['track_name']} | {rows['artist_name']}")
+            print(f"Cleaned: {rows['track_name_cleaned']} | {rows['artist_name_cleaned']}")
             print()
 
     save_path = os.path.join(PROCESSED_DATA_FOLDER, "spotify_cleaned")
@@ -91,7 +91,7 @@ def clean_spotify_data():
 
 def clean_youtube_data():
     """
-    Load, clean and save spotify data
+    Load, clean and save youtube data
     """
     # get the path for the file to be cleaned
     input_path = os.path.join(PROCESSED_DATA_FOLDER, "youtube_history_2025.parquet")
@@ -113,8 +113,8 @@ def clean_youtube_data():
     if len(df) > 0:
         sample = df[['track_name','track_name_cleaned', 'artist_name', 'artist_name_cleaned']].head(5)
         for idx, rows in sample.iterrows():
-            print(f"Original: {rows['track_name'][:40]} | {rows['artist_name'][:30]}")
-            print(f"Cleaned: {rows['track_name_cleaned'][:40]} | {rows['artist_name_cleaned'][:30]}")
+            print(f"Original: {rows['track_name']} | {rows['artist_name']}")
+            print(f"Cleaned: {rows['track_name_cleaned']} | {rows['artist_name_cleaned']}")
             print()
 
     save_path = os.path.join(PROCESSED_DATA_FOLDER, "youtube_cleaned")
@@ -124,3 +124,30 @@ def clean_youtube_data():
     return df
 
 
+def run_quality_check():
+    spotify_path = os.path.join(PROCESSED_DATA_FOLDER, "spotify_cleaned.parquet")
+    if os.path.exists(spotify_path):
+        df = pd.read_parquet(spotify_path)
+        original_unique = df['track_name'].nunique()
+        cleaned_unique = df['track_name_cleaned'].nunique()
+        print(f"\n SPOTIFY:")
+        print(f"  Unique tracks (raw):     {original_unique:,}")
+        print(f"  Unique tracks (cleaned): {cleaned_unique:,}")
+        print(f"  Duplicates removed:      {original_unique - cleaned_unique:,}")
+
+    youtube_path = os.path.join(PROCESSED_DATA_FOLDER, "youtube_cleaned.parquet")
+    if os.path.exists(youtube_path):
+        df = pd.read_parquet(youtube_path)
+        original_unique = df['track_name'].nunique()
+        cleaned_unique = df['track_name_cleaned'].nunique()
+        print(f"\n YOUTUBE:")
+        print(f"  Unique tracks (raw):     {original_unique:,}")
+        print(f"  Unique tracks (cleaned): {cleaned_unique:,}")
+        print(f"  Duplicates removed:      {original_unique - cleaned_unique:,}")
+
+if __name__ == "__main__":
+    spotify_df = clean_spotify_data()
+    youtube_df = clean_youtube_data()
+
+    
+    run_quality_check()
