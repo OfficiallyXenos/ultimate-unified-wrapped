@@ -17,7 +17,7 @@ def clean_track_name(track_name):
         '(official audio)', '(official music video)', '(lyric video)', '(lyrics)',
         '(lyric)', '(audio)', '(video)', '(visualizer)', '(visualiser)',
         '(original version)', '(radio version)', '(radio edit)', '(album version)',
-        '(remix)', '(extended version)', '(extended mix)', '(remastered)', '['
+        '(remix)', '(extended version)', '(extended mix)', '(remastered)', '[',
         '[official video]', '[official audio]', '[lyrics]', '[lyric video]',
     ]
 
@@ -83,7 +83,7 @@ def clean_spotify_data():
             print(f"Cleaned: {rows['track_name_cleaned']} | {rows['artist_name_cleaned']}")
             print()
 
-    save_path = os.path.join(PROCESSED_DATA_FOLDER, "spotify_cleaned")
+    save_path = os.path.join(PROCESSED_DATA_FOLDER, "spotify_cleaned.parquet")
     df.to_parquet(save_path, index=False)
     print("cleaned spotify data saved")
 
@@ -117,7 +117,7 @@ def clean_youtube_data():
             print(f"Cleaned: {rows['track_name_cleaned']} | {rows['artist_name_cleaned']}")
             print()
 
-    save_path = os.path.join(PROCESSED_DATA_FOLDER, "youtube_cleaned")
+    save_path = os.path.join(PROCESSED_DATA_FOLDER, "youtube_cleaned.parquet")
     df.to_parquet(save_path, index=False)
     print("cleaned youtube data saved")
 
