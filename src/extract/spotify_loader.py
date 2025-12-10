@@ -54,7 +54,7 @@ def load_spotify_data():
         print(f"Songs remaining for 2025: {len(df_2025)}")
 
     os.makedirs(PROCESSED_DATA_FOLDER, exist_ok= True)
-    save_path = os.path.join(PROCESSED_DATA_FOLDER, "Spotify_history.parquet")
+    save_path = os.path.join(PROCESSED_DATA_FOLDER, "Spotify_history_2025.parquet")
 
     df_2025.to_parquet(save_path)
     print(f"Saved 2025 data to: {save_path}")
