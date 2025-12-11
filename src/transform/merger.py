@@ -72,4 +72,30 @@ def prepare_for_merge(spotify_df, youtube_df):
     else:
         youtube_prepared = None
 
+    return spotify_prepared, youtube_prepared
+
+def merge_datasets(spotifty_prepared, youtube_prepared):
+    dfs_to_merge = []
+
+    if spotifty_prepared is not None:
+        dfs_to_merge.append(spotifty_prepared)
+    
+    if youtube_prepared is not None:
+        dfs_to_merge.append(youtube_prepared)
+
+    if not dfs_to_merge:
+        print("No datasets to merge")
+        return None
+    
+    merged_df = pd.concat(dfs_to_merge, ignore_index=True)
+
+    merged_df = merged_df.sort_values("timestamp").reset_index(drop=True)
+
+    print(f"Merge Successful! Total records are now {len(merged_df):,}")
+
+    return merged_df
+
+def add_columns(merged_df):
+
+
 
