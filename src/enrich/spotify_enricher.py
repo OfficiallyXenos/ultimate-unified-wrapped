@@ -37,3 +37,23 @@ def get_unique_tracks(df):
     unique_tracks = df.sort_values(by='play_count')
 
     return unique_tracks
+
+def search_track_on_spotify(track_name, artist_name):
+    """
+    search for tracks on spotify and returns their metadata
+    Returns None if it finds nothing
+    """
+
+    try:
+        # searching for the track
+        query = f"track:{track_name} artist:{artist_name}"
+        result = sp.search(q=query, type='track', limit=1)
+
+        if result['tracks']['items']:
+            track = result['tracks']['items'][0]
+            return track 
+        else:
+            return None
+    except Exception as e:
+        print(f"Error trying to search for {track_name}: {str(e)}")
+        return None
