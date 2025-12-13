@@ -57,3 +57,56 @@ def search_track_on_spotify(track_name, artist_name):
     except Exception as e:
         print(f"Error trying to search for {track_name}: {str(e)}")
         return None
+
+def extract_track_metadata(track_data):
+    """
+    Returns the metadata for the Spotify track object
+    """
+
+    if track_data is None:
+        return None
+    
+    try: 
+        metadata = {
+            'spotify_id': track_data['id'],
+            'album_name': track_data['album']['name'],
+            'album_release_date': track_data['album']['release_date'],
+            'album_art_url': track_data['album']['images'][0]['url'] if track_data['album']['images'] else None,
+            'popularity': track_data['popularity'],
+            'explicit': track_data['explicit'],
+            'duration_ms_spotify': track_data['duration_ms'],
+        }
+
+        artist_id = track_data['artists'][0]['id']
+        artist_data = sp.artist(artist_id)
+        metadata['genres'] = ', '.join(artist_data['genres']) if artist_data['genres'] else 'Unknown'
+
+        return metadata
+    
+    except Exception as e:
+        print("Error occured while extracting metadata: {e}")
+        return None
+    
+def get_audio_features(spotify_id):
+    """
+    Returns the audio features of a track
+    """
+    features = sp.audio_features([spotify_id])[0]
+
+    try:
+        if features:
+           return {  
+                'energy': features['energy'],
+                'valence': features['valence'],  # Happiness/Mood
+                'danceability': features['danceability'],
+                'acousticness': features['acousticness'],
+                'instrumentalness': features['instrumentalness'],
+                'speechiness': features['speechiness'],
+                'tempo': features['tempo'],
+                'loudness': features['loudness'],
+            }
+        
+        return None
+    except Exception as e:
+        print(f"Error occcured trying to get audio features: {e}")
+        return None
