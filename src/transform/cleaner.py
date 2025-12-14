@@ -60,7 +60,7 @@ def clean_spotify_data():
     Load, clean and save spotify data
     """
     # get the path for the file to be cleaned
-    input_path = os.path.join(PROCESSED_DATA_FOLDER, "Spotify_history.parquet")
+    input_path = os.path.join(PROCESSED_DATA_FOLDER, "spotify_history_2025.parquet")
 
     # check if the file exists
     if not os.path.exists(input_path):
