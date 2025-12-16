@@ -10,6 +10,11 @@ def clean_track_name(track_name):
     # converting track name to string and lower case
     track_name = str(track_name).lower()
 
+    if " - " in track_name:
+        parts = track_name.split(" - ")
+        if len(parts)>1:
+            track_name = parts[-1]
+
 
     # creating a list of things to remove from track name
     things_to_remove = [
@@ -19,6 +24,7 @@ def clean_track_name(track_name):
         '(original version)', '(radio version)', '(radio edit)', '(album version)',
         '(remix)', '(extended version)', '(extended mix)', '(remastered)', '[',
         '[official video]', '[official audio]', '[lyrics]', '[lyric video]',
+        ' ft ', ' feat' 
     ]
 
     # looping through the list to remove any of the markers if theyy exist
