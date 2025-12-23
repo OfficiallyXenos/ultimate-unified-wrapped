@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import re
 
 PROCESSED_DATA_FOLDER = os.path.join("data", "processed")
 
@@ -8,23 +9,24 @@ def clean_track_name(track_name):
         return "unknown"
     
     # converting track name to string and lower case
-    track_name = str(track_name).lower()
+    track_name = str(track_name)
 
-    if " - " in track_name:
-        parts = track_name.split(" - ")
-        if len(parts)>1:
-            track_name = parts[-1]
+    # if " - " in track_name:
+    #     parts = track_name.split(" - ")
+    #     if len(parts)>1:
+    #         track_name = parts[-1]
+
 
 
     # creating a list of things to remove from track name
     things_to_remove = [
         '(feat.', '(ft.', '(featuring', '(with', '(official video)',
-        '(official audio)', '(official music video)', '(lyric video)', '(lyrics)',
+        '(official audio)', '(official music video)', '(lyric video)','(lyric video)', '(lyrics)',
         '(lyric)', '(audio)', '(video)', '(visualizer)', '(visualiser)',
         '(original version)', '(radio version)', '(radio edit)', '(album version)',
         '(remix)', '(extended version)', '(extended mix)', '(remastered)', '[',
         '[official video]', '[official audio]', '[lyrics]', '[lyric video]',
-        ' ft ', ' feat' 
+        ' ft ', ' feat', '(official visualiser)', ' ft.', '(lyric visualizer)'
     ]
 
     # looping through the list to remove any of the markers if theyy exist
