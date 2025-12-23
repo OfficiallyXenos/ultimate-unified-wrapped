@@ -176,53 +176,6 @@ def extract_basic_metadata(track_data):
     except Exception:
         return None
 
-def get_audio_features_batch(spotify_ids):
-    """
-    Get audio features for multiple tracks at once (BATCH PROCESSING)
-    Spotify allows up to 100 tracks per request
-    """
-    if not spotify_ids:
-        return {}
-    
-    # Clean and validate all IDs
-    clean_ids = [clean_spotify_id(sid) for sid in spotify_ids]
-    clean_ids = [sid for sid in clean_ids if sid]
-    
-    if not clean_ids:
-        return {}
-    
-    features_map = {}
-    
-    # Process in batches of 100 (Spotify's limit)
-    for i in range(0, len(clean_ids), 100):
-        batch = clean_ids[i:i+100]
-        try:
-            results = sp.audio_features(batch)
-            
-            if results:
-                for idx, features in enumerate(results):
-                    if features and isinstance(features, dict):
-                        track_id = batch[idx]
-                        features_map[track_id] = {
-                            'energy': features.get('energy'),
-                            'valence': features.get('valence'),
-                            'danceability': features.get('danceability'),
-                            'acousticness': features.get('acousticness'),
-                            'instrumentalness': features.get('instrumentalness'),
-                            'speechiness': features.get('speechiness'),
-                            'tempo': features.get('tempo'),
-                            'loudness': features.get('loudness'),
-                        }
-            
-            # Small delay between batches
-            if i + 100 < len(clean_ids):
-                time.sleep(0.2)
-        
-        except Exception:
-            # If batch fails, continue with next batch
-            continue
-    
-    return features_map
 
 def enrich_tracks_optimized(unique_tracks, sample_size=None):
     """
