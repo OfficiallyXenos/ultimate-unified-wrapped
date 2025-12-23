@@ -11,12 +11,6 @@ def clean_track_name(track_name):
     # converting track name to string and lower case
     track_name = str(track_name)
 
-    # if " - " in track_name:
-    #     parts = track_name.split(" - ")
-    #     if len(parts)>1:
-    #         track_name = parts[-1]
-
-
 
     # creating a list of things to remove from track name
     things_to_remove = [
@@ -50,12 +44,19 @@ def clean_artist_name(artist_name):
     # convert to lowercase
     artist_name = str(artist_name).lower()
 
-    # handling the ' - topic' addition to artist name in yt data
-    if " - topic" in artist_name:
-        artist_name = artist_name.split(" - topic")[0]
-    
-    if "- topic" in artist_name:
-        artist_name = artist_name.split("- topic")[0]
+    # List of things to remove
+    removals = [
+        " - topic",
+        "- topic",
+        " topic",
+        "atvevo",
+        "vevo", 
+        " official",
+        "official"
+    ]
+
+    for item in removals:
+        artist_name = artist_name.replace(item, "")
 
     # handling multiple artists
     if "," in artist_name:
